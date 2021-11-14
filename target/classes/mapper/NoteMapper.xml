@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vue.dao.mapper.NoteBookMapper">
+    <insert id="">
+        insert into notebook(noteType,noteTitle,noteContent,create_date,update_date)
+        values(#{noteType},#{noteTitle},#{noteContent},#{create_date},#{update_date})
+    </insert>
+
+    <insert id="addNoteAndType">
+        insert into notetype(noteTypeTitle)
+        values(#{noteTypeTitle})
+    </insert>
+
+    <select id="getNoteBooks" resultType="com.vue.entity.NoteBook">
+       select book.id,type.noteTypeTitle as noteTypeTitle,book.noteType,book.noteTitle,book.noteContent,
+       book.create_date as createDate,book.update_date as updateDate
+       from notebook book,notetype type
+       where book.noteType=type.id ORDER BY book.id desc
+    </select>
+
+
+    <select id="getNoteTypes" resultType="com.vue.entity.NoteType">
+        select id,noteTypeTitle from notetype
+    </select>
+
+
+    <insert id="insertNoteBook">
+        insert into notebook(noteType ,noteTitle,noteContent,create_date,update_date)
+        values(#{noteType},#{noteTitle},#{noteContent},#{createDate},#{updateDate})
+    </insert>
+</mapper>

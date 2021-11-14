@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vue.dao.mapper.EmpMapper">
+    <select id="getEmpListByPage" resultType="com.vue.entity.Emp">
+        select e.*,n.name as nationName, ps.name as politicName,dt.name as departmentName,p.name as posName,jl.name as jobLevelName
+        from employee e,nation n,politicsstatus ps, department dt,position p ,joblevel jl
+        where e.nationId = n.id and e.politicId = ps.id and e.departmentId = dt.id and e.posId = p.id and e.jobLevelId = jl.id order by id DESC
+    </select>
+
+    <select id="getPListByPage" resultType="com.vue.entity.PoliticsStatus">
+        select * from politicsstatus
+    </select>
+
+    <select id="getNations" resultType="com.vue.entity.Nation">
+        select * from nation;
+    </select>
+
+    <select id="getPositions" resultType="com.vue.entity.Position">
+        select * from position;
+    </select>
+
+    <select id="getJobLevels" resultType="com.vue.entity.JobLevel">
+        select * from joblevel;
+    </select>
+
+    <select id="getDepartments" resultType="com.vue.entity.Department">
+        select * from department WHERE enabled=1;
+    </select>
+
+    <delete id="deleteEmp">
+        delete from employee where id in
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId}
+        </foreach>
+    </delete>
+
+    <update id="updateEmp">
+        update employee
+        <set>
+            <if test="emp.name != null  and emp.name != '' ">
+                name = #{emp.name,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.gender != null and emp.gender != '' ">
+                gender = #{emp.gender,jdbcType=CHAR},
+            </if>
+            <if test="emp.birthday != null ">
+                birthday = #{emp.birthday,jdbcType=DATE},
+            </if>
+            <if test="emp.idCard != null and emp.idCard != ''">
+                idCard = #{emp.idCard,jdbcType=CHAR},
+            </if>
+            <if test="emp.wedlock != null and emp.wedlock != ''">
+                wedlock = #{emp.wedlock,jdbcType=CHAR},
+            </if>
+            <if test="emp.nationId != null">
+                nationId = #{emp.nationId,jdbcType=INTEGER},
+            </if>
+            <if test="emp.nativePlace != null and emp.nativePlace != ''">
+                nativePlace = #{emp.nativePlace,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.politicId != null">
+                politicId = #{emp.politicId,jdbcType=INTEGER},
+            </if>
+            <if test="emp.email != null and emp.email != ''">
+                email = #{emp.email,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.phone != null and emp.phone != ''">
+                phone = #{emp.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.address != null and emp.address != ''">
+                address = #{emp.address,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.departmentId != null">
+                departmentId = #{emp.departmentId,jdbcType=INTEGER},
+            </if>
+            <if test="emp.jobLevelId != null">
+                jobLevelId = #{emp.jobLevelId,jdbcType=INTEGER},
+            </if>
+            <if test="emp.posId != null">
+                posId = #{emp.posId,jdbcType=INTEGER},
+            </if>
+            <if test="emp.engageForm != null and emp.engageForm != ''">
+                engageForm = #{emp.engageForm,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.tiptopDegree != null and emp.tiptopDegree != ''">
+                tiptopDegree = #{emp.tiptopDegree,jdbcType=CHAR},
+            </if>
+            <if test="emp.specialty != null and emp.specialty != ''">
+                specialty = #{emp.specialty,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.school != null and emp.school != ''">
+                school = #{emp.school,jdbcType=VARCHAR},
+            </if>
+            <if test="emp.beginDate != null">
+                beginDate = #{emp.beginDate,jdbcType=DATE},
+            </if>
+            <if test="emp.workState != null">
+                workState = #{emp.workState,jdbcType=CHAR},
+            </if>
+            <if test="emp.contractTerm != null">
+                contractTerm = #{emp.contractTerm,jdbcType=DOUBLE},
+            </if>
+            <if test="emp.conversionTime != null">
+                conversionTime = #{emp.conversionTime,jdbcType=DATE},
+            </if>
+            <if test="emp.notWorkDate != null">
+                notWorkDate = #{emp.notWorkDate,jdbcType=DATE},
+            </if>
+            <if test="emp.beginContract != null">
+                beginContract = #{emp.beginContract,jdbcType=DATE},
+            </if>
+            <if test="emp.endContract != null">
+                endContract = #{emp.endContract,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{emp.id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insertEmp" parameterType="com.vue.entity.Emp">
+        insert into employee(name,gender,birthday,idCard,wedlock,
+      nationId,nativePlace, politicId, email,
+      phone, address, departmentId,jobLevelId,
+      posId, engageForm,tiptopDegree, specialty,
+      school,beginDate,workID,contractTerm,
+      conversionTime,beginContract, endContract, workAge)
+      values (#{emp.name}, #{emp.gender},#{emp.birthday}, #{emp.idCard}, #{emp.wedlock}, #{emp.nationId},
+      #{emp.nativePlace}, #{emp.politicId}, #{emp.email},
+      #{emp.phone}, #{emp.address}, #{emp.departmentId},
+      #{emp.jobLevelId}, #{emp.posId}, #{emp.engageForm},
+      #{emp.tiptopDegree}, #{emp.specialty}, #{emp.school},
+      #{emp.beginDate},#{emp.workID},
+      #{emp.contractTerm}, #{emp.conversionTime},
+      #{emp.beginContract}, #{emp.endContract}, #{emp.workAge}
+      )
+    </insert>
+
+    <insert id="addEmps">
+        insert into employee (name, gender,
+        birthday, idCard, wedlock, nationId,
+        nativePlace, politicId, email,
+        phone, address, departmentId,
+        jobLevelId, posId, engageForm,
+        tiptopDegree, specialty, school,
+        beginDate,workID,
+        contractTerm, conversionTime,
+        beginContract, endContract, workAge)
+        values
+        <foreach collection="emps" item="emp" separator=",">
+            (#{emp.name,jdbcType=VARCHAR}, #{emp.gender,jdbcType=CHAR},
+            #{emp.birthday,jdbcType=DATE}, #{emp.idCard,jdbcType=CHAR}, #{emp.wedlock,jdbcType=CHAR},
+            #{emp.nationId,jdbcType=BIGINT},
+            #{emp.nativePlace,jdbcType=VARCHAR}, #{emp.politicId,jdbcType=BIGINT}, #{emp.email,jdbcType=VARCHAR},
+            #{emp.phone,jdbcType=VARCHAR}, #{emp.address,jdbcType=VARCHAR}, #{emp.departmentId,jdbcType=BIGINT},
+            #{emp.jobLevelId,jdbcType=BIGINT}, #{emp.posId,jdbcType=BIGINT}, #{emp.engageForm,jdbcType=VARCHAR},
+            #{emp.tiptopDegree,jdbcType=VARCHAR}, #{emp.specialty,jdbcType=VARCHAR}, #{emp.school,jdbcType=VARCHAR},
+            #{emp.beginDate,jdbcType=DATE},#{emp.workID,jdbcType=BIGINT},
+            #{emp.contractTerm,jdbcType=BIGINT}, #{emp.conversionTime,jdbcType=DATE},
+            #{emp.beginContract,jdbcType=DATE}, #{emp.endContract,jdbcType=DATE}, #{emp.workAge,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+</mapper>

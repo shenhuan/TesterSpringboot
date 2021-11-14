@@ -1,0 +1,30 @@
+person:
+  name: YiHui
+  age: 18
+  list:
+    - java
+    - c
+    - python
+    -
+#多环境配置
+server:
+  port: 8086
+#选择要激活那个环境块
+spring:
+  profiles:
+    active: test
+---
+server:
+  port: 8083
+spring:
+  profiles: dev #配置环境的名称
+---
+server:
+  port: 8084
+spring:
+  profiles: test  #配置环境的名称
+
+#    #指定静态资源目录
+#static-locations:
+#  classpath:/public/
+

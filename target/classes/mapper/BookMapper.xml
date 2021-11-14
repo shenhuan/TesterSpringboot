@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vue.dao.mapper.BookMapper">
+    <resultMap id="Book" type="com.vue.entity.Book" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="author" property="author" jdbcType="VARCHAR" />
+        <result column="publish" property="publish" jdbcType="VARCHAR"/>
+        <result column="pages" property="pages" jdbcType="INTEGER" />
+        <result column="price" property="price" jdbcType="FLOAT" />
+        <!--        <result column="bookcaseid" property="bookcaseid" jdbcType="int" />-->
+        <!--        <result column="abled" property="abled" jdbcType="int" />-->
+    </resultMap>
+    <select id="getBookListByPage" resultType="com.vue.entity.Book">
+       select * from book
+    </select>
+    <!-- 用来记录分页查询时的全部数据量，避免出现分页查询时须要查询两次 -->
+    <resultMap type="java.lang.Integer" id="total">
+        <result column="total" />
+    </resultMap>
+    <insert id="insertBook">
+        insert into book(name,author,publish,pages,price,bookcaseid,abled)
+        value (#{name},#{author},#{publish},#{pages},#{price},#{bookcaseid},#{abled})
+    </insert>
+
+    <delete id="deleteBook">
+        delete from book where id = #{id}
+    </delete>
+
+    <update id="updateBook">
+        update book set name=#{name},author=#{author},price=#{price},publish=#{publish} where id=#{id}
+    </update>
+
+
+    <!--namespace中需要与使用@Mapper的接口对应-->
+    <!--UserMapper.xml文件名称必须与使用@Mapper的接口一致-->
+    <!--标签中的id必须与@Mapper的接口中的方法名一致，且参数一致-->
+<!--    <select id="getBookListByPage" resultMap="Book,total">-->
+<!--        select SQL_CALC_FOUND_ROWS * from book limit #{currIndex} , #{pageSize};-->
+<!--        SELECT FOUND_ROWS() as total;-->
+<!--    </select>-->
+<!--    <select id="getBookListByPageByMybatis" resultType="com.vue.entity.Book">-->
+<!--        SELECT *-->
+<!--        FROM t_user-->
+<!--        <where>-->
+<!--            <if test="query.username !=null">-->
+<!--                and  username = #{query.username}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
+</mapper>
